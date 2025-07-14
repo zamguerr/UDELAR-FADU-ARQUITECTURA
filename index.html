@@ -71,30 +71,35 @@
             border-color: #e0e0e0;
             color: #9e9e9e;
         }
-        .optativas-libres {
-            display: none;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 20px;
+        .optativas-section {
+            margin-top: 40px;
             background-color: #fff;
             border-radius: 15px;
             padding: 20px;
             box-shadow: 0 3px 10px rgba(210, 54, 105, 0.1);
+            display: none;
         }
-        .optativas-libres h2 {
-            grid-column: 1 / -1;
+        .optativas-section h2 {
             color: #d23669;
             border-bottom: 2px solid #ffb8d9;
             padding-bottom: 10px;
             margin-top: 0;
         }
-        .optativa-libre {
-            padding: 12px;
-            border-radius: 10px;
-            text-align: center;
-            background-color: #ffecf1;
+        .optativa-selector {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
             border: 1px solid #ffd6e7;
+            background-color: #ffecf1;
             color: #d23669;
+        }
+        .previas-info {
+            padding: 15px;
+            background-color: #f8bbd0;
+            border-radius: 5px;
+            margin-top: 10px;
+            color: #ad1457;
         }
         .reset-btn {
             display: block;
@@ -120,14 +125,20 @@
     <div class="malla-container">
         <div class="malla" id="malla"></div>
         
-        <div class="optativas-libres" id="optativas-libres">
-            <h2>Optativas Libres</h2>
-            <!-- Las optativas libres se insertarán aquí dinámicamente -->
+        <div class="optativas-section" id="optativas-section">
+            <h2>Optativas Libres 2025</h2>
+            <select class="optativa-selector" id="optativaSelector">
+                <option value="">Selecciona una optativa</option>
+                <!-- Las optativas se cargarán aquí dinámicamente -->
+            </select>
+            <div class="previas-info" id="previasInfo">
+                Selecciona una optativa para ver sus previaturas
+            </div>
         </div>
     </div>
 
     <script>
-        // Datos de la malla curricular
+        // Datos de la malla curricular con todas las previaturas
         const materias = [
             // 1° Año
             { nombre: "PyR", año: 1, prerrequisitos: [] },
@@ -170,58 +181,33 @@
             { nombre: "TFC", año: 5, prerrequisitos: ["PDO"] }
         ];
 
-        // Optativas libres (se desbloquean al completar "Optativa de Inicio")
-        const optativasLibres2025 = [
-            "Fotogrametría de rango cercano para la arquitectura",
-            "Materialidades Digitales",
-            "Gestión del agua",
-            "HORMIGONES: estructura, propiedades, dosificación",
-            "Profundización en el análisis estructural",
-            "Luz y color en espacios exteriores",
-            "Producción Audiovisual Digital",
-            "Inteligencia Artificial aplicada al Diseño",
-            "El mueble autoconstruido",
-            "Teorías y prácticas de paisaje",
-            "CROQUIS, dibujo a pulso",
-            "Dibujo de ideación en arquitectura",
-            "Hibridación digital: Ideación y Diseño",
-            "ZIPPED KATEI",
-            "SAY NO MORE / EL EVENTO",
-            "La Habitación Sin Nombre",
-            "Proyecto, Comunicación y Práctica",
-            "Economía Urbana Avanzada",
-            "Ficciones Políticas. Género espacio y territorio",
-            "Introducción al BIM",
-            "Fundamentos de Diseño Paramétrico",
-            "Patologías frecuentes en la construcción",
-            "Proyecto avanzado de estructuras",
-            "Construcción y diseño en madera",
-            "Acondicionamiento Artificial e Instalaciones III",
-            "Análisis y evaluación urbano-arquitectónica",
-            "Gestión de la Producción de Obra",
-            "Profundización en diseño de estructuras",
-            "Realidades Extendidas",
-            "Metodología de la investigación",
-            "Dibujando Memoria",
-            "Posproducción Digital",
-            "Idea y Transmedia",
-            "Representación de Proyecto Ejecutivo",
-            "Color y Luz",
-            "Arquitectura Interior y Mobiliario",
-            "Taller Rural",
-            "Actualizaciones Proyectuales",
-            "MAPEA! Taller de Cartografías",
-            "Vivienda Máxima",
-            "Vestíbulos Urbanos",
-            "Arquitectos Uruguayos",
-            "Re-presentaciones. Arte y cultura visual-material",
-            "Accesibilidad al Medio Físico",
-            "Taller de project management"
+        // Optativas libres con sus previaturas
+        const optativasLibres = [
+            { nombre: "Fotogrametría de rango cercano para la arquitectura", prerrequisitos: ["PyR"] },
+            { nombre: "Materialidades Digitales", prerrequisitos: ["PyR"] },
+            { nombre: "Gestión del agua", prerrequisitos: ["Acond. Artificial e Inst. I"] },
+            { nombre: "HORMIGONES: estructura, propiedades, dosificación", prerrequisitos: ["Construcción III", "Estructuras I"] },
+            { nombre: "Profundización en el análisis estructural", prerrequisitos: ["Estructuras I", "Proyecto Edilicio Básico"] },
+            { nombre: "Luz y color en espacios exteriores", prerrequisitos: ["Acondicionamiento Natural", "Taller 2"] },
+            { nombre: "Producción Audiovisual Digital", prerrequisitos: ["PyR"] },
+            { nombre: "Inteligencia Artificial aplicada al Diseño", prerrequisitos: ["PyR"] },
+            { nombre: "El mueble autoconstruido", prerrequisitos: ["P1 y P2 aprobados arquitectura"] },
+            { nombre: "Teorías y prácticas de paisaje / Montevideo en sus 300 años", prerrequisitos: ["PYR 1 y PYR 2"] },
+            { nombre: "Introducción al BIM", prerrequisitos: ["PyR"] },
+            { nombre: "Fundamentos de Diseño Paramétrico", prerrequisitos: ["PyR"] },
+            { nombre: "Patologías frecuentes en la construcción", prerrequisitos: ["Estructuras I", "Construcción II"] },
+            { nombre: "Proyecto avanzado de estructuras", prerrequisitos: ["Estructuras II", "Estabilidad de las construcciones III"] },
+            { nombre: "Construcción y diseño en madera", prerrequisitos: ["Construcción II", "Estructuras I"] },
+            { nombre: "Acondicionamiento Artificial e Instalaciones III", prerrequisitos: ["Acondicionamiento Natural"] },
+            { nombre: "Gestión de la Producción de Obra", prerrequisitos: ["Construcción II", "Instalaciones 2", "Transversal 3"] },
+            { nombre: "Profundización en diseño de estructuras", prerrequisitos: ["Estructuras I", "Estructuras II"] }
         ];
 
         // Elementos del DOM
         const malla = document.getElementById('malla');
-        const optativasLibresDiv = document.getElementById('optativas-libres');
+        const optativasSection = document.getElementById('optativas-section');
+        const optativaSelector = document.getElementById('optativaSelector');
+        const previasInfo = document.getElementById('previasInfo');
         const resetBtn = document.getElementById('resetBtn');
 
         // Cargar progreso guardado
@@ -256,7 +242,7 @@
                     materiaDiv.classList.remove('aprobada');
                 });
                 actualizarEstadoMaterias();
-                optativasLibresDiv.style.display = 'none';
+                optativasSection.style.display = 'none';
             }
         }
 
@@ -299,14 +285,40 @@
                 
                 malla.appendChild(añoDiv);
             }
+        }
 
-            // Renderizar optativas libres (inicialmente ocultas)
+        // Cargar optativas en el selector
+        function cargarOptativas() {
             optativasLibres.forEach(optativa => {
-                const optativaDiv = document.createElement('div');
-                optativaDiv.className = 'optativa-libre';
-                optativaDiv.textContent = optativa;
-                optativasLibresDiv.appendChild(optativaDiv);
+                const option = document.createElement('option');
+                option.value = optativa.nombre;
+                option.textContent = optativa.nombre;
+                optativaSelector.appendChild(option);
             });
+        }
+
+        // Mostrar previaturas de la optativa seleccionada
+        function mostrarPreviasOptativa() {
+            const optativaSeleccionada = optativaSelector.value;
+            const optativaData = optativasLibres.find(o => o.nombre === optativaSeleccionada);
+            
+            if (optativaSeleccionada && optativaData) {
+                let textoPrevias = "Previaturas requeridas:";
+                
+                if (optativaData.prerrequisitos.length > 0) {
+                    textoPrevias += "<ul>";
+                    optativaData.prerrequisitos.forEach(previa => {
+                        textoPrevias += `<li>${previa}</li>`;
+                    });
+                    textoPrevias += "</ul>";
+                } else {
+                    textoPrevias += " Ninguna";
+                }
+                
+                previasInfo.innerHTML = textoPrevias;
+            } else {
+                previasInfo.textContent = "Selecciona una optativa para ver sus previaturas";
+            }
         }
 
         // Actualizar estado de materias (bloqueadas/desbloqueadas)
@@ -330,17 +342,19 @@
         function verificarOptativaInicio() {
             const optativaInicioDiv = document.querySelector('.materia[data-nombre="Optativa de Inicio"]');
             if (optativaInicioDiv && optativaInicioDiv.classList.contains('aprobada')) {
-                optativasLibresDiv.style.display = 'grid';
+                optativasSection.style.display = 'block';
             } else {
-                optativasLibresDiv.style.display = 'none';
+                optativasSection.style.display = 'none';
             }
         }
 
         // Event listeners
         resetBtn.addEventListener('click', reiniciarProgreso);
+        optativaSelector.addEventListener('change', mostrarPreviasOptativa);
 
         // Inicializar
         renderizarMalla();
+        cargarOptativas();
         cargarProgreso();
         actualizarEstadoMaterias();
     </script>
