@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Malla Curricular Arquitectura</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f8f8;
+      margin: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+    }
+    .semester {
+      background: #d9e7f7;
+      padding: 10px;
+      border-radius: 6px;
+    }
+    .subject {
+      background: #f7d9d9;
+      margin: 5px 0;
+      padding: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Malla Curricular Arquitectura - FADU</h1>
+  <div class="grid">
+    <div class="semester">
+      <h3>1er Semestre</h3>
+      <div class="subject">Materia 1</div>
+      <div class="subject">Materia 2</div>
+    </div>
+    <div class="semester">
+      <h3>2do Semestre</h3>
+      <div class="subject">Materia 3</div>
+      <div class="subject">Materia 4</div>
+    </div>
+    <!-- Agrega más semestres aquí -->
+  </div>
+</body>
+</html>
