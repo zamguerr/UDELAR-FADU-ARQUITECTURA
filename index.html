@@ -71,23 +71,22 @@
             border-color: #e0e0e0;
             color: #9e9e9e;
         }
-        .optativas-section {
-            margin-top: 40px;
-            background-color: #fff;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 3px 10px rgba(210, 54, 105, 0.1);
-        }
-        .optativas-section h2 {
-            color: #d23669;
-            border-bottom: 2px solid #ffb8d9;
-            padding-bottom: 10px;
-        }
         .optativas-libres {
             display: none;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
             margin-top: 20px;
+            background-color: #fff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(210, 54, 105, 0.1);
+        }
+        .optativas-libres h2 {
+            grid-column: 1 / -1;
+            color: #d23669;
+            border-bottom: 2px solid #ffb8d9;
+            padding-bottom: 10px;
+            margin-top: 0;
         }
         .optativa-libre {
             padding: 12px;
@@ -97,20 +96,33 @@
             border: 1px solid #ffd6e7;
             color: #d23669;
         }
+        .reset-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #d23669;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .reset-btn:hover {
+            background-color: #ad1457;
+        }
     </style>
 </head>
 <body>
     <h1>Malla Curricular - Arquitectura</h1>
     
+    <button class="reset-btn" id="resetBtn">Reiniciar Progreso</button>
+    
     <div class="malla-container">
         <div class="malla" id="malla"></div>
         
-        <div class="optativas-section">
-            <h2>Optativas de Inicio</h2>
-            <div id="optativas-inicio"></div>
-            
-            <h2 id="titulo-optativas-libres" style="display:none;">Optativas Libres</h2>
-            <div class="optativas-libres" id="optativas-libres"></div>
+        <div class="optativas-libres" id="optativas-libres">
+            <h2>Optativas Libres</h2>
+            <!-- Las optativas libres se insertarán aquí dinámicamente -->
         </div>
     </div>
 
@@ -158,8 +170,8 @@
             { nombre: "TFC", año: 5, prerrequisitos: ["PDO"] }
         ];
 
-        // Optativas de inicio
-        const optativasInicio = [
+        // Optativas libres (se desbloquean al completar "Optativa de Inicio")
+        const optativasLibres2025 = [
             "Fotogrametría de rango cercano para la arquitectura",
             "Materialidades Digitales",
             "Gestión del agua",
@@ -178,11 +190,7 @@
             "La Habitación Sin Nombre",
             "Proyecto, Comunicación y Práctica",
             "Economía Urbana Avanzada",
-            "Ficciones Políticas. Género espacio y territorio"
-        ];
-
-        // Optativas libres (se desbloquean al completar Optativa de Inicio)
-        const optativasLibres = [
+            "Ficciones Políticas. Género espacio y territorio",
             "Introducción al BIM",
             "Fundamentos de Diseño Paramétrico",
             "Patologías frecuentes en la construcción",
@@ -211,71 +219,97 @@
             "Taller de project management"
         ];
 
-        // Crear la malla visual
+        // Elementos del DOM
         const malla = document.getElementById('malla');
-        const optativasInicioDiv = document.getElementById('optativas-inicio');
         const optativasLibresDiv = document.getElementById('optativas-libres');
-        const tituloOptativasLibres = document.getElementById('titulo-optativas-libres');
+        const resetBtn = document.getElementById('resetBtn');
 
-        // Agrupar materias por año
-        const materiasPorAño = {};
-        materias.forEach(materia => {
-            if (!materiasPorAño[materia.año]) {
-                materiasPorAño[materia.año] = [];
-            }
-            materiasPorAño[materia.año].push(materia);
-        });
-
-        // Renderizar cada año
-        for (let año = 1; año <= 5; año++) {
-            const añoDiv = document.createElement('div');
-            añoDiv.className = 'año';
-            añoDiv.innerHTML = `<h2>${año}° Año</h2>`;
+        // Cargar progreso guardado
+        function cargarProgreso() {
+            const progreso = JSON.parse(localStorage.getItem('mallaProgreso')) || {};
             
-            if (materiasPorAño[año]) {
-                materiasPorAño[año].forEach(materia => {
-                    const materiaDiv = document.createElement('div');
-                    materiaDiv.className = 'materia';
-                    materiaDiv.textContent = materia.nombre;
-                    materiaDiv.dataset.nombre = materia.nombre;
-                    
-                    materiaDiv.addEventListener('click', () => {
-                        if (!materiaDiv.classList.contains('bloqueada')) {
-                            materiaDiv.classList.toggle('aprobada');
-                            actualizarEstadoMaterias();
-                            verificarOptativaInicio();
-                        }
-                    });
-                    
-                    añoDiv.appendChild(materiaDiv);
-                });
-            }
+            document.querySelectorAll('.materia').forEach(materiaDiv => {
+                const nombreMateria = materiaDiv.dataset.nombre;
+                if (progreso[nombreMateria]) {
+                    materiaDiv.classList.add('aprobada');
+                }
+            });
             
-            malla.appendChild(añoDiv);
+            verificarOptativaInicio();
         }
 
-        // Renderizar optativas de inicio
-        optativasInicio.forEach(optativa => {
-            const optativaDiv = document.createElement('div');
-            optativaDiv.className = 'materia';
-            optativaDiv.textContent = optativa;
-            optativaDiv.dataset.nombre = optativa;
-            optativaDiv.addEventListener('click', function() {
-                this.classList.toggle('aprobada');
-                verificarOptativaInicio();
+        // Guardar progreso
+        function guardarProgreso() {
+            const progreso = {};
+            document.querySelectorAll('.materia').forEach(materiaDiv => {
+                const nombreMateria = materiaDiv.dataset.nombre;
+                progreso[nombreMateria] = materiaDiv.classList.contains('aprobada');
             });
-            optativasInicioDiv.appendChild(optativaDiv);
-        });
+            localStorage.setItem('mallaProgreso', JSON.stringify(progreso));
+        }
 
-        // Renderizar optativas libres (inicialmente ocultas)
-        optativasLibres.forEach(optativa => {
-            const optativaDiv = document.createElement('div');
-            optativaDiv.className = 'optativa-libre';
-            optativaDiv.textContent = optativa;
-            optativasLibresDiv.appendChild(optativaDiv);
-        });
+        // Reiniciar progreso
+        function reiniciarProgreso() {
+            if (confirm('¿Estás seguro de querer reiniciar todo tu progreso?')) {
+                localStorage.removeItem('mallaProgreso');
+                document.querySelectorAll('.materia').forEach(materiaDiv => {
+                    materiaDiv.classList.remove('aprobada');
+                });
+                actualizarEstadoMaterias();
+                optativasLibresDiv.style.display = 'none';
+            }
+        }
 
-        // Función para actualizar el estado de las materias (bloqueadas/desbloqueadas)
+        // Renderizar malla
+        function renderizarMalla() {
+            // Agrupar materias por año
+            const materiasPorAño = {};
+            materias.forEach(materia => {
+                if (!materiasPorAño[materia.año]) {
+                    materiasPorAño[materia.año] = [];
+                }
+                materiasPorAño[materia.año].push(materia);
+            });
+
+            // Renderizar cada año
+            for (let año = 1; año <= 5; año++) {
+                const añoDiv = document.createElement('div');
+                añoDiv.className = 'año';
+                añoDiv.innerHTML = `<h2>${año}° Año</h2>`;
+                
+                if (materiasPorAño[año]) {
+                    materiasPorAño[año].forEach(materia => {
+                        const materiaDiv = document.createElement('div');
+                        materiaDiv.className = 'materia';
+                        materiaDiv.textContent = materia.nombre;
+                        materiaDiv.dataset.nombre = materia.nombre;
+                        
+                        materiaDiv.addEventListener('click', () => {
+                            if (!materiaDiv.classList.contains('bloqueada')) {
+                                materiaDiv.classList.toggle('aprobada');
+                                actualizarEstadoMaterias();
+                                verificarOptativaInicio();
+                                guardarProgreso();
+                            }
+                        });
+                        
+                        añoDiv.appendChild(materiaDiv);
+                    });
+                }
+                
+                malla.appendChild(añoDiv);
+            }
+
+            // Renderizar optativas libres (inicialmente ocultas)
+            optativasLibres.forEach(optativa => {
+                const optativaDiv = document.createElement('div');
+                optativaDiv.className = 'optativa-libre';
+                optativaDiv.textContent = optativa;
+                optativasLibresDiv.appendChild(optativaDiv);
+            });
+        }
+
+        // Actualizar estado de materias (bloqueadas/desbloqueadas)
         function actualizarEstadoMaterias() {
             document.querySelectorAll('.materia').forEach(materiaDiv => {
                 const nombreMateria = materiaDiv.dataset.nombre;
@@ -292,16 +326,22 @@
             });
         }
 
-        // Función para verificar si se completó la optativa de inicio
+        // Verificar si se completó la optativa de inicio
         function verificarOptativaInicio() {
             const optativaInicioDiv = document.querySelector('.materia[data-nombre="Optativa de Inicio"]');
             if (optativaInicioDiv && optativaInicioDiv.classList.contains('aprobada')) {
-                tituloOptativasLibres.style.display = 'block';
                 optativasLibresDiv.style.display = 'grid';
+            } else {
+                optativasLibresDiv.style.display = 'none';
             }
         }
 
+        // Event listeners
+        resetBtn.addEventListener('click', reiniciarProgreso);
+
         // Inicializar
+        renderizarMalla();
+        cargarProgreso();
         actualizarEstadoMaterias();
     </script>
 </body>
