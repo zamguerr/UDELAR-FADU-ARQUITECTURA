@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Malla Curricular - Arquitectura</title>
+    <link href="https://fonts.googleapis.com/css2?family=Questrial&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Questrial', sans-serif;
             background-color: #fff5f7;
             margin: 0;
             padding: 20px;
@@ -16,6 +17,7 @@
             text-align: center;
             color: #d23669;
             margin-bottom: 30px;
+            font-weight: normal;
         }
         .malla-container {
             display: flex;
@@ -41,6 +43,7 @@
             margin-top: 0;
             border-bottom: 2px solid #ffb8d9;
             padding-bottom: 10px;
+            font-weight: normal;
         }
         .materia {
             padding: 12px;
@@ -84,6 +87,7 @@
             border-bottom: 2px solid #ffb8d9;
             padding-bottom: 10px;
             margin-top: 0;
+            font-weight: normal;
         }
         .optativa-selector {
             width: 100%;
@@ -93,13 +97,27 @@
             border: 1px solid #ffd6e7;
             background-color: #ffecf1;
             color: #d23669;
+            font-family: 'Questrial', sans-serif;
         }
-        .previas-info {
+        .optativa-info {
             padding: 15px;
             background-color: #f8bbd0;
             border-radius: 5px;
             margin-top: 10px;
             color: #ad1457;
+        }
+        .optativa-info p {
+            margin: 5px 0;
+        }
+        .optativa-info ul {
+            margin: 10px 0 0 20px;
+            padding: 0;
+        }
+        .modalidad {
+            font-weight: bold;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #d23669;
         }
         .reset-btn {
             display: block;
@@ -111,6 +129,8 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            font-family: 'Questrial', sans-serif;
+            transition: background-color 0.3s;
         }
         .reset-btn:hover {
             background-color: #ad1457;
@@ -131,8 +151,8 @@
                 <option value="">Selecciona una optativa</option>
                 <!-- Las optativas se cargarán aquí dinámicamente -->
             </select>
-            <div class="previas-info" id="previasInfo">
-                Selecciona una optativa para ver sus previaturas
+            <div class="optativa-info" id="optativaInfo">
+                Selecciona una optativa para ver sus detalles
             </div>
         </div>
     </div>
@@ -181,33 +201,33 @@
             { nombre: "TFC", año: 5, prerrequisitos: ["PDO"] }
         ];
 
-        // Optativas libres con sus previaturas
+        // Optativas libres con sus previaturas y modalidad
         const optativasLibres = [
-            { nombre: "Fotogrametría de rango cercano para la arquitectura", prerrequisitos: ["PyR"] },
-            { nombre: "Materialidades Digitales", prerrequisitos: ["PyR"] },
-            { nombre: "Gestión del agua", prerrequisitos: ["Acond. Artificial e Inst. I"] },
-            { nombre: "HORMIGONES: estructura, propiedades, dosificación", prerrequisitos: ["Construcción III", "Estructuras I"] },
-            { nombre: "Profundización en el análisis estructural", prerrequisitos: ["Estructuras I", "Proyecto Edilicio Básico"] },
-            { nombre: "Luz y color en espacios exteriores", prerrequisitos: ["Acondicionamiento Natural", "Taller 2"] },
-            { nombre: "Producción Audiovisual Digital", prerrequisitos: ["PyR"] },
-            { nombre: "Inteligencia Artificial aplicada al Diseño", prerrequisitos: ["PyR"] },
-            { nombre: "El mueble autoconstruido", prerrequisitos: ["P1 y P2 aprobados arquitectura"] },
-            { nombre: "Teorías y prácticas de paisaje / Montevideo en sus 300 años", prerrequisitos: ["PYR 1 y PYR 2"] },
-            { nombre: "Introducción al BIM", prerrequisitos: ["PyR"] },
-            { nombre: "Fundamentos de Diseño Paramétrico", prerrequisitos: ["PyR"] },
-            { nombre: "Patologías frecuentes en la construcción", prerrequisitos: ["Estructuras I", "Construcción II"] },
-            { nombre: "Proyecto avanzado de estructuras", prerrequisitos: ["Estructuras II", "Estabilidad de las construcciones III"] },
-            { nombre: "Construcción y diseño en madera", prerrequisitos: ["Construcción II", "Estructuras I"] },
-            { nombre: "Acondicionamiento Artificial e Instalaciones III", prerrequisitos: ["Acondicionamiento Natural"] },
-            { nombre: "Gestión de la Producción de Obra", prerrequisitos: ["Construcción II", "Instalaciones 2", "Transversal 3"] },
-            { nombre: "Profundización en diseño de estructuras", prerrequisitos: ["Estructuras I", "Estructuras II"] }
+            { nombre: "Fotogrametría de rango cercano para la arquitectura", prerrequisitos: ["PyR"], modalidad: "Semi-presencial" },
+            { nombre: "Materialidades Digitales", prerrequisitos: ["PyR"], modalidad: "Semi-presencial" },
+            { nombre: "Gestión del agua", prerrequisitos: ["Acond. Artificial e Inst. I"], modalidad: "Presencial" },
+            { nombre: "HORMIGONES: estructura, propiedades, dosificación", prerrequisitos: ["Construcción III", "Estructuras I"], modalidad: "Semi-presencial" },
+            { nombre: "Profundización en el análisis estructural", prerrequisitos: ["Estructuras I", "Proyecto Edilicio Básico"], modalidad: "Presencial" },
+            { nombre: "Luz y color en espacios exteriores", prerrequisitos: ["Acondicionamiento Natural", "Taller 2"], modalidad: "Presencial" },
+            { nombre: "Producción Audiovisual Digital", prerrequisitos: ["PyR"], modalidad: "Semi-presencial" },
+            { nombre: "Inteligencia Artificial aplicada al Diseño", prerrequisitos: ["PyR"], modalidad: "Distancia" },
+            { nombre: "El mueble autoconstruido", prerrequisitos: ["P1 y P2 aprobados arquitectura"], modalidad: "Presencial" },
+            { nombre: "Teorías y prácticas de paisaje / Montevideo en sus 300 años", prerrequisitos: ["PYR 1 y PYR 2"], modalidad: "Presencial" },
+            { nombre: "Introducción al BIM", prerrequisitos: ["PyR"], modalidad: "Semi-presencial" },
+            { nombre: "Fundamentos de Diseño Paramétrico", prerrequisitos: ["PyR"], modalidad: "Semi-presencial" },
+            { nombre: "Patologías frecuentes en la construcción", prerrequisitos: ["Estructuras I", "Construcción II"], modalidad: "Presencial" },
+            { nombre: "Proyecto avanzado de estructuras", prerrequisitos: ["Estructuras II", "Estabilidad de las construcciones III"], modalidad: "Semipresencial" },
+            { nombre: "Construcción y diseño en madera", prerrequisitos: ["Construcción II", "Estructuras I"], modalidad: "Presencial" },
+            { nombre: "Acondicionamiento Artificial e Instalaciones III", prerrequisitos: ["Acondicionamiento Natural"], modalidad: "A distancia" },
+            { nombre: "Gestión de la Producción de Obra", prerrequisitos: ["Construcción II", "Instalaciones 2", "Transversal 3"], modalidad: "Presencial" },
+            { nombre: "Profundización en diseño de estructuras", prerrequisitos: ["Estructuras I", "Estructuras II"], modalidad: "Presencial" }
         ];
 
         // Elementos del DOM
         const malla = document.getElementById('malla');
         const optativasSection = document.getElementById('optativas-section');
         const optativaSelector = document.getElementById('optativaSelector');
-        const previasInfo = document.getElementById('previasInfo');
+        const optativaInfo = document.getElementById('optativaInfo');
         const resetBtn = document.getElementById('resetBtn');
 
         // Cargar progreso guardado
@@ -243,6 +263,8 @@
                 });
                 actualizarEstadoMaterias();
                 optativasSection.style.display = 'none';
+                optativaSelector.value = '';
+                optativaInfo.textContent = 'Selecciona una optativa para ver sus detalles';
             }
         }
 
@@ -297,27 +319,29 @@
             });
         }
 
-        // Mostrar previaturas de la optativa seleccionada
-        function mostrarPreviasOptativa() {
+        // Mostrar información de la optativa seleccionada
+        function mostrarInfoOptativa() {
             const optativaSeleccionada = optativaSelector.value;
             const optativaData = optativasLibres.find(o => o.nombre === optativaSeleccionada);
             
             if (optativaSeleccionada && optativaData) {
-                let textoPrevias = "Previaturas requeridas:";
+                let infoHTML = "<p><strong>Previaturas requeridas:</strong></p>";
                 
                 if (optativaData.prerrequisitos.length > 0) {
-                    textoPrevias += "<ul>";
+                    infoHTML += "<ul>";
                     optativaData.prerrequisitos.forEach(previa => {
-                        textoPrevias += `<li>${previa}</li>`;
+                        infoHTML += `<li>${previa}</li>`;
                     });
-                    textoPrevias += "</ul>";
+                    infoHTML += "</ul>";
                 } else {
-                    textoPrevias += " Ninguna";
+                    infoHTML += "<p>Ninguna</p>";
                 }
                 
-                previasInfo.innerHTML = textoPrevias;
+                infoHTML += `<p class="modalidad">Modalidad: ${optativaData.modalidad}</p>`;
+                
+                optativaInfo.innerHTML = infoHTML;
             } else {
-                previasInfo.textContent = "Selecciona una optativa para ver sus previaturas";
+                optativaInfo.textContent = "Selecciona una optativa para ver sus detalles";
             }
         }
 
@@ -350,7 +374,7 @@
 
         // Event listeners
         resetBtn.addEventListener('click', reiniciarProgreso);
-        optativaSelector.addEventListener('change', mostrarPreviasOptativa);
+        optativaSelector.addEventListener('change', mostrarInfoOptativa);
 
         // Inicializar
         renderizarMalla();
