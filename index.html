@@ -1,69 +1,174 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Malla Curricular Interactiva</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #fafafa;
-    padding: 20px;
-  }
-  .malla {
-    display: grid;
-    grid-template-columns: repeat(6, 120px); /* 6 semestres, por ejemplo */
-    gap: 15px;
-  }
-  .semestre {
-    background: #f0e6f7;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-  }
-  .semestre h3 {
-    margin: 0 0 10px 0;
-    font-size: 1.1rem;
-    color: #5b3e96;
-  }
-  .materia {
-    background: #d9caff;
-    margin: 5px 0;
-    width: 100px;
-    height: 100px; /* para que sea cuadrado */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 8px;
-    text-align: center;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  .materia:hover {
-    background: #b594e8;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malla Curricular - Arquitectura</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .malla {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .año {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .año h2 {
+            text-align: center;
+            color: #555;
+            margin-top: 0;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .materia {
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            background-color: #f0f7ff;
+            border: 1px solid #d0e3ff;
+        }
+        .materia:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .materia.aprobada {
+            text-decoration: line-through;
+            background-color: #e8f5e9;
+            border-color: #c8e6c9;
+            color: #2e7d32;
+        }
+        .materia.bloqueada {
+            opacity: 0.5;
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+            border-color: #e0e0e0;
+        }
+    </style>
 </head>
 <body>
+    <h1>Malla Curricular - Arquitectura</h1>
+    <div class="malla" id="malla"></div>
 
-<div class="malla">
-  <div class="semestre">
-    <h3>1° Año</h3>
-    <div class="materia">Matemáticas 1</div>
-    <div class="materia">Dibujo 1</div>
-    <div class="materia">Optativa Inicio</div>
-  </div>
-  <div class="semestre">
-    <h3>2° Año</h3>
-    <div class="materia">Matemáticas 2</div>
-    <div class="materia">Construcción 1</div>
-    <div class="materia">Historia 1</div>
-  </div>
-  <!-- Sigue con los demás semestres -->
-</div>
+    <script>
+        // Datos de la malla curricular
+        const materias = [
+            // 1° Año
+            { nombre: "Iniciación a la Arquitectura", año: 1, prerrequisitos: [] },
+            { nombre: "Historia I", año: 1, prerrequisitos: [] },
+            { nombre: "Transversal I", año: 1, prerrequisitos: [] },
+            { nombre: "Optativa de Inicio", año: 1, prerrequisitos: [] },
+            { nombre: "Tecnología Integrada", año: 1, prerrequisitos: [] },
+            { nombre: "Acondicionamiento Natural", año: 1, prerrequisitos: [] },
+            { nombre: "Matemáticas I", año: 1, prerrequisitos: [] },
+            { nombre: "Proyecto y Representación (PR)", año: 1, prerrequisitos: [] },
 
+            // 2° Año
+            { nombre: "Historia II", año: 2, prerrequisitos: ["Historia I"] },
+            { nombre: "Acond. Artificial e Inst. I", año: 2, prerrequisitos: ["Acondicionamiento Natural", "Tecnología Integrada"] },
+            { nombre: "Construcción I", año: 2, prerrequisitos: ["Acondicionamiento Natural", "Tecnología Integrada"] },
+            { nombre: "Estructuras I", año: 2, prerrequisitos: ["Matemáticas I"] },
+            { nombre: "Proyecto Edilicio Básico (PEB)", año: 2, prerrequisitos: ["Proyecto y Representación (PR)"] },
+            { nombre: "Proyecto Urbano Básico (PUB)", año: 2, prerrequisitos: ["Proyecto y Representación (PR)"] },
+            { nombre: "Transversal II", año: 2, prerrequisitos: ["Transversal I"] },
+
+            // 3° Año
+            { nombre: "Historia III", año: 3, prerrequisitos: ["Historia II"] },
+            { nombre: "Acond. Artificial e Inst. II", año: 3, prerrequisitos: ["Acond. Artificial e Inst. I"] },
+            { nombre: "Construcción II", año: 3, prerrequisitos: ["Construcción I"] },
+            { nombre: "Estructuras II", año: 3, prerrequisitos: ["Estructuras I"] },
+            { nombre: "PEB/PUB Continuación", año: 3, prerrequisitos: ["Proyecto Edilicio Básico (PEB)", "Proyecto Urbano Básico (PUB)"] },
+            { nombre: "Transversal III (Obra)", año: 3, prerrequisitos: ["Transversal II"] },
+
+            // 4° Año
+            { nombre: "Construcción III", año: 4, prerrequisitos: ["Construcción II"] },
+            { nombre: "Proyecto Edilicio Avanzado (PEA)", año: 4, prerrequisitos: ["Proyecto Edilicio Básico (PEB)"] },
+            { nombre: "Proyecto Urbano Avanzado (PUA)", año: 4, prerrequisitos: ["Proyecto Urbano Básico (PUB)"] },
+            { nombre: "Proyecto Tema Específico (PTE)", año: 4, prerrequisitos: [] }, // 80% créditos se manejará lógicamente
+            { nombre: "Transversal IV (Patrimonio)", año: 4, prerrequisitos: ["Transversal III (Obra)"] },
+            { nombre: "Transversal V (Vivienda)", año: 4, prerrequisitos: ["Transversal IV (Patrimonio)"] },
+
+            // 5° Año
+            { nombre: "Arquitectura Legal", año: 5, prerrequisitos: ["Construcción III"] },
+            { nombre: "Práctica y Dirección de Obra (PDO)", año: 5, prerrequisitos: ["Proyecto Edilicio Avanzado (PEA)", "Proyecto Urbano Avanzado (PUA)"] },
+            { nombre: "Trabajo Final de Carrera (TFC)", año: 5, prerrequisitos: ["Práctica y Dirección de Obra (PDO)"] }
+        ];
+
+        // Crear la malla visual
+        const malla = document.getElementById('malla');
+        
+        // Agrupar materias por año
+        const materiasPorAño = {};
+        materias.forEach(materia => {
+            if (!materiasPorAño[materia.año]) {
+                materiasPorAño[materia.año] = [];
+            }
+            materiasPorAño[materia.año].push(materia);
+        });
+
+        // Renderizar cada año
+        for (let año = 1; año <= 5; año++) {
+            const añoDiv = document.createElement('div');
+            añoDiv.className = 'año';
+            añoDiv.innerHTML = `<h2>${año}° Año</h2>`;
+            
+            if (materiasPorAño[año]) {
+                materiasPorAño[año].forEach(materia => {
+                    const materiaDiv = document.createElement('div');
+                    materiaDiv.className = 'materia';
+                    materiaDiv.textContent = materia.nombre;
+                    materiaDiv.dataset.nombre = materia.nombre;
+                    
+                    materiaDiv.addEventListener('click', () => {
+                        if (!materiaDiv.classList.contains('bloqueada')) {
+                            materiaDiv.classList.toggle('aprobada');
+                            actualizarEstadoMaterias();
+                        }
+                    });
+                    
+                    añoDiv.appendChild(materiaDiv);
+                });
+            }
+            
+            malla.appendChild(añoDiv);
+        }
+
+        // Función para actualizar el estado de las materias (bloqueadas/desbloqueadas)
+        function actualizarEstadoMaterias() {
+            document.querySelectorAll('.materia').forEach(materiaDiv => {
+                const nombreMateria = materiaDiv.dataset.nombre;
+                const materiaData = materias.find(m => m.nombre === nombreMateria);
+                
+                const bloqueada = materiaData.prerrequisitos.some(prev => {
+                    const prevDiv = document.querySelector(`.materia[data-nombre="${prev}"]`);
+                    return prevDiv && !prevDiv.classList.contains('aprobada');
+                });
+                
+                materiaDiv.classList.toggle('bloqueada', bloqueada);
+            });
+        }
+
+        // Inicializar
+        actualizarEstadoMaterias();
+    </script>
 </body>
 </html>
