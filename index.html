@@ -1,87 +1,69 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Malla Curricular Arquitectura - FADU</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f8f8f8;
-      margin: 20px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 10px;
-    }
-    .semester {
-      background: #d9e7f7;
-      padding: 10px;
-      border-radius: 6px;
-    }
-    .subject {
-      background: #f7d9d9;
-      margin: 5px 0;
-      padding: 8px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Malla Curricular Interactiva</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #fafafa;
+    padding: 20px;
+  }
+  .malla {
+    display: grid;
+    grid-template-columns: repeat(6, 120px); /* 6 semestres, por ejemplo */
+    gap: 15px;
+  }
+  .semestre {
+    background: #f0e6f7;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+  .semestre h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+    color: #5b3e96;
+  }
+  .materia {
+    background: #d9caff;
+    margin: 5px 0;
+    width: 100px;
+    height: 100px; /* para que sea cuadrado */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .materia:hover {
+    background: #b594e8;
+  }
+</style>
 </head>
 <body>
-  <h1>Malla Curricular Arquitectura - FADU</h1>
-  <div class="grid">
-    <!-- 1° AÑO -->
-    <div class="semester">
-      <h3>1° AÑO</h3>
-      <div class="subject">Iniciación a la Arquitectura</div>
-      <div class="subject">Acondicionamiento natural</div>
-      <div class="subject">Tecnología integrada</div>
-      <div class="subject">Proyecto y Representación PR 1er semestre</div>
-      <div class="subject">Proyecto y Representación PR 2do semestre</div>
-      <div class="subject">Optativa de inicio</div>
-      <div class="subject">Transversal 1</div>
-      <div class="subject">Matemáticas</div>
-    </div>
 
-    <!-- 2° AÑO -->
-    <div class="semester">
-      <h3>2° AÑO</h3>
-      <div class="subject">Historia 1: Arquitectura occidental desde la antigüedad clásica a la Ilustración</div>
-      <div class="subject">Acondicionamiento artificial e instalaciones 1</div>
-      <div class="subject">Construcción 1</div>
-      <div class="subject">Estructuras 1</div>
-      <div class="subject">Proyecto 1er semestre</div>
-      <div class="subject">Proyecto 2do semestre</div>
-      <div class="subject">Transversal 2</div>
-    </div>
-
-    <!-- 3° AÑO -->
-    <div class="semester">
-      <h3>3° AÑO</h3>
-      <div class="subject">Historia 2</div>
-      <div class="subject">Acondicionamiento e instalaciones 2</div>
-      <div class="subject">Construcción 2</div>
-      <div class="subject">Estabilidad en las construcciones 2</div>
-      <div class="subject">PEB Proyecto edilicio básico 1er semestre</div>
-      <div class="subject">PEB Proyecto edilicio básico 2do semestre</div>
-      <div class="subject">PUB Proyecto urbano básico 1er semestre</div>
-      <div class="subject">PUB Proyecto urbano básico 2do semestre</div>
-      <div class="subject">Transversal 3</div>
-    </div>
-
-    <!-- 4° AÑO -->
-  <div class="semester">
-    <h3>4° AÑO</h3>
-    <div class="subject">Construcción 3</div>
-    <div class="subject">Estructuras 2</div>
-    <div class="subject">Historia 3</div>
-    <div class="subject">PEA - Proyecto Edilicio Avanzado 1er semestre</div>
-    <div class="subject">PUA - Proyecto Urbano Avanzado 1er semestre</div>
-    <div class="subject">Transversal 4</div>
-    <div class="subject">Transversal 5</div>
-    <div class="subject">PTE - Proyecto Tema Específico</div>
+<div class="malla">
+  <div class="semestre">
+    <h3>1° Año</h3>
+    <div class="materia">Matemáticas 1</div>
+    <div class="materia">Dibujo 1</div>
+    <div class="materia">Optativa Inicio</div>
   </div>
+  <div class="semestre">
+    <h3>2° Año</h3>
+    <div class="materia">Matemáticas 2</div>
+    <div class="materia">Construcción 1</div>
+    <div class="materia">Historia 1</div>
   </div>
+  <!-- Sigue con los demás semestres -->
+</div>
+
 </body>
 </html>
